@@ -18,7 +18,7 @@ def main():
     db.connect()
 
     # Execute a sample query
-    query = "SELECT * FROM playing_with_neon;"
+    query = "SELECT * FROM meter_data;"
     result = db.execute_query(query)
 
     # Print the query result
