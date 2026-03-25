@@ -25,7 +25,7 @@ class MeterDataFrame(QMainWindow):
         # Replace with your Neon DB credentials
         db_name = "neondb"
         user = "neondb_owner"
-        password = "npg_n1yXkw4aCoLV"
+        password = "<CHANGE_ME>"
         host = "ep-late-cloud-agqu0crh-pooler.c-2.eu-central-1.aws.neon.tech"
         port = "5432"
 
