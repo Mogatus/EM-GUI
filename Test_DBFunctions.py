@@ -1,15 +1,16 @@
 from DBFunctions import DBFunctions
-
+import configparser
 
 def main():
-    # Replace with your Neon DB credentials
-    # Connect string from Neon:
-    # postgresql://neondb_owner:npg_n1yXkw4aCoLV@ep-late-cloud-agqu0crh-pooler.c-2.eu-central-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require
-    db_name = "neondb"
-    user = "neondb_owner"
-    password = "<CHANGE_ME>"
-    host = "ep-late-cloud-agqu0crh-pooler.c-2.eu-central-1.aws.neon.tech"
-    port = "5432"  # Default PostgreSQL port
+    config = configparser.ConfigParser()
+    config.read("config.ini")
+    db = config["database"]
+
+    db_name = db["database"]
+    user = db["user"]
+    password = db["password"]
+    host = db["host"]
+    port = db["port"]
 
     # Initialize the DBFunctions object
     db = DBFunctions(db_name, user, password, host, port)

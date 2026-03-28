@@ -1,0 +1,6 @@
+[database]
+host = <host of DB server>
+port = <port of DB server>
+user = <user of db>
+password = <password>
+database = <database>

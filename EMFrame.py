@@ -1,6 +1,6 @@
 from PyQt5.QtWidgets import QApplication, QMainWindow, QTableWidget, QTableWidgetItem, QVBoxLayout, QWidget
 from DBFunctions import DBFunctions
-
+import configparser
 
 class MeterDataFrame(QMainWindow):
     def __init__(self):
@@ -22,12 +22,15 @@ class MeterDataFrame(QMainWindow):
         self.load_data()
 
     def load_data(self):
-        # Replace with your Neon DB credentials
-        db_name = "neondb"
-        user = "neondb_owner"
-        password = "<CHANGE_ME>"
-        host = "ep-late-cloud-agqu0crh-pooler.c-2.eu-central-1.aws.neon.tech"
-        port = "5432"
+        config = configparser.ConfigParser()
+        config.read("config.ini")
+        db = config["database"]
+
+        db_name = db["database"]
+        user = db["user"]
+        password = db["password"]
+        host = db["host"]
+        port = db["port"]
 
         # Initialize the DBFunctions object
         db = DBFunctions(db_name, user, password, host, port)
