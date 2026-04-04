@@ -1,5 +1,5 @@
 from PyQt5.QtWidgets import QApplication, QMainWindow, QTableWidget, QTableWidgetItem, QVBoxLayout, QWidget
-from DBFunctions import DBFunctions
+from DBFunctions import DBFunctions, keep_latest_entry_per_day
 import configparser
 
 class MeterDataFrame(QMainWindow):
@@ -39,6 +39,8 @@ class MeterDataFrame(QMainWindow):
         # Fetch data from the meter_data table
         query = "SELECT * FROM meter_data;"
         data = db.execute_query(query)
+        data = keep_latest_entry_per_day(data, timestamp_index=5) if data else data
+        print ("Data:", data)
 
         # Populate the table widget
         if data:
