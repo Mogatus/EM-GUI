@@ -1,4 +1,4 @@
 psycopg2-binary>=2.9
-PyQt5>=5.15
+PyQt6>=6.11
 pytest>=9.0
-
+pyside6>=6.11.0

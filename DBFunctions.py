@@ -1,6 +1,7 @@
 import psycopg2
 from psycopg2 import OperationalError
 from datetime import date, datetime
+import configparser
 
 
 def _parse_timestamp(value):
@@ -46,8 +47,9 @@ def keep_latest_entry_per_day(data, timestamp_index=-1):
         if current is None or timestamp > current[0] or (timestamp == current[0] and row_index > current[1]):
             latest_by_day[day] = (timestamp, row_index, row)
 
-    filtered_rows = [latest_by_day[day][2] for day in sorted(latest_by_day)]
+    filtered_rows = [entry[2] for entry in sorted(latest_by_day.values(), key=lambda e: e[1])]
     return tuple(filtered_rows) if isinstance(data, tuple) else filtered_rows
+
 
 
 class DBFunctions:
@@ -105,3 +107,29 @@ class DBFunctions:
             print("Database connection closed.")
         else:
             print("No active connection to close.")
+
+    @staticmethod
+    def readMeterDataFromDB():
+        config = configparser.ConfigParser()
+        config.read("config.ini")
+        db_config = config["database"]
+
+        db_name = db_config["database"]
+        user = db_config["user"]
+        password = db_config["password"]
+        host = db_config["host"]
+        port = db_config["port"]
+
+        # Initialize the DBFunctions object
+        db = DBFunctions(db_name, user, password, host, port)
+        db.connect()
+
+        # Fetch data from the meter_data table
+        query = "SELECT loadval, pv, grid_feed_in, grid_purchase, savetimestamp FROM meter_data ORDER BY savetimestamp DESC"
+        data = db.execute_query(query)
+        print(data)
+        data = keep_latest_entry_per_day(data, timestamp_index=4) if data else data
+
+        db.close_connection()
+        return data
+
